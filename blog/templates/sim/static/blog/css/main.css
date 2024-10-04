@@ -1,0 +1,91 @@
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.all {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: rgba(225, 225, 225, 0.35);
+    overflow-x: hidden;
+}
+
+.all .header {
+    width: 100%;
+    /*height: 100%;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*background-color: #fff;*/
+    justify-content: space-between;
+    position: sticky;
+    z-index: 999;
+    top: 0;
+    opacity: 1;
+    background: url(./../img/a15.webp) center center no-repeat #fff;
+    background-size: 100%;
+}
+
+.all .header .content {
+    width: 100%;
+    height: 3.125rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.all .header .content ul {
+    display: flex;
+    flex-direction: row;
+}
+
+li {
+    text-align: center;
+    display: inline-block;
+}
+
+.all .header .me {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.all .body {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+

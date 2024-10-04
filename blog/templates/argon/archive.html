@@ -1,0 +1,153 @@
+{% extends 'argon/base.html' %}
+
+{% block main %}
+    <article class="post post-full card bg-white shadow-sm border-0">
+        <header class="post-header text-center">
+            <a class="post-title" href="">归档</a>
+            <div class="post-meta">
+                <div class="post-meta-detail post-meta-detail-views">
+                    <i class="fa fa-eye" aria-hidden="true"></i> 0
+                </div>
+                <div class="post-meta-devide">|</div>
+                <div class="post-meta-detail post-meta-detail-comments">
+                    <i class="fa fa-comments-o" aria-hidden="true"></i> 0
+                </div>
+            </div>
+        </header>
+
+        <div class="post-content" id="post_content">
+            <div class="argon-timeline archive-timeline">
+                {% regroup post_list by created_time|date:"Y" as year_list %}
+                {% for year in year_list %}
+                    <div class="argon-timeline-node">
+                        <h2 class="argon-timeline-time archive-timeline-year">
+                            <a href="#">{{ year.grouper }}</a>
+                        </h2>
+                        <div class="argon-timeline-card card bg-gradient-secondary archive-timeline-title"></div>
+                    </div>
+                    {% regroup year.list by created_time|date:"m" as month_list %}
+                    {% for month in month_list %}
+                        <div class="argon-timeline-node">
+                            <h3 class="argon-timeline-time archive-timeline-month">
+                                <a href="#">{{ month.grouper }}月</a>
+                            </h3>
+                            <div class="argon-timeline-card card bg-gradient-secondary archive-timeline-title"></div>
+                        </div>
+                        {% for post in month.list %}
+                            <div class="argon-timeline-node">
+                                <div class="argon-timeline-time">{{ post.created_time|date:"m-d" }}</div>
+                                <div class="argon-timeline-card card bg-gradient-secondary archive-timeline-title">
+                                    <a href="{{ post.get_absolute_url_argon }}">{{ post.title }}</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+    </article>
+    <div id="share_container">
+        <div id="share" data-initialized="true">
+            <a class="no-pjax icon-wechat" tooltip="分享到微信">
+                <button class="btn btn-icon btn-success">
+                    <span class="btn-inner--icon"><i class="fa fa-weixin"></i></span>
+                </button>
+            </a>
+            <a target="_blank" class="no-pjax icon-douban" tooltip="分享到豆瓣">
+                <button class="btn btn-icon btn-primary" style="background: #209261;border: none;">
+                    <span aria-hidden="true">豆</span>
+                </button>
+            </a>
+            <a target="_blank" class="no-pjax icon-qq" tooltip="分享到 QQ">
+                <button class="btn btn-icon btn-primary" style="background: #2196f3;border: none;">
+                    <span class="btn-inner--icon"><i class="fa fa-qq"></i></span>
+                </button>
+            </a>
+            <a target="_blank" class="no-pjax icon-qzone" tooltip="分享到 QQ 空间">
+                <button class="btn btn-icon btn-primary" style="background: #ffc107;border: none;">
+                    <span class="btn-inner--icon"><i class="fa fa-star"></i></span>
+                </button>
+            </a>
+            <a target="_blank" class="no-pjax icon-weibo" tooltip="分享到微博">
+                <button class="btn btn-icon btn-warning">
+                    <span class="btn-inner--icon"><i class="fa fa-weibo"></i></span>
+                </button>
+            </a>
+            <a target="_blank" class="no-pjax icon-facebook" tooltip="分享到 Facebook">
+                <button class="btn btn-icon btn-primary" style="background: #283593;border: none;">
+                    <span class="btn-inner--icon"><i class="fa fa-facebook"></i></span>
+                </button>
+            </a>
+            <a target="_blank" class="no-pjax icon-twitter" tooltip="分享到 Twitter">
+                <button class="btn btn-icon btn-primary" style="background: #03a9f4;border: none;">
+                    <span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
+                </button>
+            </a>
+            <a target="_blank" class="no-pjax icon-telegram"
+               href="https://telegram.me/share/url?url="
+               tooltip="分享到 Telegram">
+                <button class="btn btn-icon btn-primary" style="background: #42a5f5;border: none;">
+                    <span class="btn-inner--icon"><i class="fa fa-telegram"></i></span>
+                </button>
+            </a>
+            <a target="_blank" class="no-pjax icon-copy-link" id="share_copy_link" tooltip="复制链接">
+                <button class="btn btn-icon btn-default">
+                    <span class="btn-inner--icon"><i class="fa fa-link"></i></span>
+                </button>
+            </a>
+        </div>
+        <button id="share_show" class="btn btn-icon btn-primary" tooltip="分享">
+            <span class="btn-inner--icon"><i class="fa fa-share"></i></span>
+        </button>
+    </div>
+    <script type="text/javascript">
+        socialShare("#share", {
+            title: window.title,
+            description: window.description,
+            wechatQrcodeTitle: "分享到微信",
+            wechatQrcodeHelper: '微信扫描二维码',
+            source: window.location.pathname
+        });
+        $("#share_show")[0].onclick = function () {
+            $("#share_container").addClass("opened");
+        };
+        $("#share_copy_link")[0].onclick = function () {
+            let input = document.createElement('input');
+            document.body.appendChild(input);
+            input.setAttribute("value", window.location.href);
+            input.setAttribute("readonly", "readonly");
+            input.setAttribute("style", "opacity: 0;mouse-events:none;");
+            input.select();
+            if (document.execCommand('copy')) {
+                iziToast.show({
+                    title: '链接已复制',
+                    message: "链接已复制到剪贴板",
+                    class: 'shadow',
+                    position: 'topRight',
+                    backgroundColor: '#2dce89',
+                    titleColor: '#ffffff',
+                    messageColor: '#ffffff',
+                    iconColor: '#ffffff',
+                    progressBarColor: '#ffffff',
+                    icon: 'fa fa-check',
+                    timeout: 5000
+                });
+            } else {
+                iziToast.show({
+                    title: '复制失败',
+                    message: "请手动复制链接",
+                    class: 'shadow',
+                    position: 'topRight',
+                    backgroundColor: '#f5365c',
+                    titleColor: '#ffffff',
+                    messageColor: '#ffffff',
+                    iconColor: '#ffffff',
+                    progressBarColor: '#ffffff',
+                    icon: 'fa fa-close',
+                    timeout: 5000
+                });
+            }
+            document.body.removeChild(input);
+        };
+    </script>
+{% endblock main %}

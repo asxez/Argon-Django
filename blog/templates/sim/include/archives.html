@@ -1,0 +1,12 @@
+<div class="widget widget-archives">
+    <h3 class="widget-title">Archives</h3>
+    <ul>
+        {% for date in date_list %}
+            <li>
+                <a href="{% url 'blog:sim_archive' date.year date.month %}">{{ date.year }} 年 {{ date.month }} 月</a>
+            </li>
+            {% empty %}
+            No archive!
+        {% endfor %}
+    </ul>
+</div>

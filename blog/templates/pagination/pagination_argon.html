@@ -1,0 +1,107 @@
+<!--分页-->
+<nav>
+    <ul class="pagination">
+        <li class="page-item">
+            <a aria-label="First Page" class="page-link" href="?page=1">
+                <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+            </a>
+        </li>
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a aria-label="Previous Page" class="page-link" href="?{{ page_obj.previous_page_number.querystring }}">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item">
+                <a aria-label="Previous Page" class="page-link" href="">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% endif %}
+        {% for page in page_obj.pages %}
+            {% if page %}
+                {% if page == page_obj.number %}
+                    <li class="page-item active"><a class="page-link" href="">{{ page }}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?{{ page.querystring }}">{{ page }}</a></li>
+                {% endif %}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a aria-label="Next Page" class="page-link" href="?{{ page_obj.next_page_number.querystring }}">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item">
+                <a aria-label="Next Page" class="page-link" href="">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% endif %}
+        <li class="page-item">
+            <a aria-label="Last Page" class="page-link" href="?page={{ paginator.num_pages }}">
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<!--手机分页-->
+<nav>
+    <ul class="pagination pagination-mobile">
+        <li class="page-item">
+            <a aria-label="First Page" class="page-link" href="?page=1">
+                <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+            </a>
+        </li>
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a aria-label="Previous Page" class="page-link" href="?{{ page_obj.previous_page_number.querystring }}">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item">
+                <a aria-label="Previous Page" class="page-link" href="">
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% endif %}
+        {% for page in page_obj.pages %}
+            {% if page %}
+                {% if page == page_obj.number %}
+                    <li class="page-item active"><a class="page-link" href="">{{ page }}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?{{ page.querystring }}">{{ page }}</a></li>
+                {% endif %}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a aria-label="Next Page" class="page-link" href="?{{ page_obj.next_page_number.querystring }}">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item">
+                <a aria-label="Next Page" class="page-link" href="">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% endif %}
+        <li class="page-item">
+            <a aria-label="Last Page" class="page-link" href="?page={{ paginator.num_pages }}">
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</nav>

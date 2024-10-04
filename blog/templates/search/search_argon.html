@@ -1,0 +1,241 @@
+{% extends 'argon/base.html' %}
+
+{% block main %}
+    {% if query %}
+        {% for post in page_obj.object_list %}
+            {% if post.object.top %}
+                <article class="post card bg-white shadow-sm border-0 post-preview" id="post-{{ post.object.pk }}"
+                         class="post-{{ post.object.pk }} post type-post status-publish format-standard sticky hentry category-learn category-front-end tag-front-end">
+                    <header class="post-header text-center post-header-with-thumbnail">
+                        {% if post.object.img %}
+                            <img class='post-thumbnail lazyload'
+                                 src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpi+P//PwNAgAEACPwC/tuiTRYAAAAASUVORK5CYII='
+                                 data-original='{{ post.object.img.url }}'
+                                 alt='thumbnail' style='opacity: 0;'>
+                        {% else %}
+                            <img class='post-thumbnail lazyload'
+                                 src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpi+P//PwNAgAEACPwC/tuiTRYAAAAASUVORK5CYII='
+                                 alt='thumbnail' style='opacity: 0;'>
+                        {% endif %}
+
+                        <div class='post-header-text-container'>
+                            <a class="post-title"
+                               href="{{ post.object.get_absolute_url_argon }}">{{ post.object.title }}</a>
+                            <div class="post-meta">
+                                <div class="post-meta-detail post-meta-detail-stickey">
+                                    <i class="fa fa-thumb-tack" aria-hidden="true"></i> 置顶
+                                </div>
+                                <div class="post-meta-devide">|</div>
+                                <div class="post-meta-detail post-meta-detail-time">
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                    <time title="发布于 {{ post.object.created_time }} | 编辑于 {{ post.object.modified_time }}">{{ post.object.created_time }}</time>
+                                </div>
+                                <div class="post-meta-devide">|</div>
+                                <div class="post-meta-detail post-meta-detail-categories">
+                                    <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+                                    <a href="{% url 'blog:argon_category' post.object.category %}" target="_blank"
+                                       class="post-meta-detail-catagory-link">{{ post.object.category }}</a>
+                                </div>
+                                <div class="post-meta-devide">|</div>
+                                <div class="post-meta-detail post-meta-detail-views">
+                                    <i class="fa fa-eye" aria-hidden="true"></i> {{ post.object.views }}
+                                </div>
+                                </br>
+                                <div class="post-meta-detail post-meta-detail-words">
+                                    <i class="fa fa-file-word-o" aria-hidden="true"></i><span
+                                        title="包含  行代码"> {{ post.object.word_count }} 字</span>
+                                </div>
+                                <div class="post-meta-devide">|</div>
+                                <div class="post-meta-detail post-meta-detail-words">
+                                    <i class="fa fa-hourglass-end" aria-hidden="true"></i>
+                                    {{ post.object.reading_time }} 分钟
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="post-content">{{ post.object.excerpt }}</div>
+
+                    <div class="post-tags">
+                        <i class="fa fa-tags" aria-hidden="true"></i>
+                        {% for tag in post.object.tags.all %}
+                            <a href='{% url 'blog:argon_tag' tag.name %}' target='_blank'
+                               class='tag badge badge-secondary post-meta-detail-tag'>{{ tag.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </article>
+            {% else %}
+                <div class="shuoshuo-preview-container shuoshuo-foldable card bg-white shadow-sm border-0"
+                     id="post-{{ post.object.pk }}"
+                     class="post-{{ post.object.pk }} shuoshuo type-shuoshuo status-publish hentry">
+                    <a class="shuoshuo-title"
+                       href="{{ post.object.get_absolute_url_argon }}">{{ post.object.title }}</a>
+
+                    <div class="shuoshuo-content">
+                        <p>{{ post.object.excerpt }}</p>
+                        {% if post.object.img %}
+                            <p><img fetchpriority="high" decoding="async" class="lazyload"
+                                    src="{{ post.object.img.url }}" height="auto"/>
+                            </p>
+                            <p>&nbsp;</p>
+                        {% endif %}
+                    </div>
+                    <div class="shuoshuo-preview-meta">
+                    <span>
+                        <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                        <span class="shuoshuo-date-month">{{ post.object.created_time.month }}</span> 月
+                        <span class="shuoshuo-date-date">{{ post.object.created_time.day }}</span> 日 ,
+                        <span class="shuoshuo-date-year">{{ post.object.created_time.year }}</span>
+                        <div class="post-meta-devide">|</div>
+                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                        <span class="shuoshuo-date-time">{{ post.object.created_time.time }}</span>
+                    </span>
+
+                        <div class="post-meta-devide">|</div>
+                        <div class="post-meta-detail post-meta-detail-categories">
+                            <i class="fa fa-bookmark-o" aria-hidden="true"></i>
+                            <a href="{% url 'blog:argon_category' post.object.category %}" target="_blank"
+                               class="post-meta-detail-catagory-link">{{ post.object.category }}</a>
+                        </div>
+
+                        <div class="post-meta-devide">|</div>
+                        <div class="post-meta-detail post-meta-detail-words">
+                            <i class="fa fa-file-word-o" aria-hidden="true"></i><span
+                                title="包含  行代码"> {{ post.object.word_count }} 字</span>
+                        </div>
+                        <div class="post-meta-devide">|</div>
+                        <div class="post-meta-detail post-meta-detail-words">
+                            <i class="fa fa-hourglass-end" aria-hidden="true"></i>
+                            {{ post.object.reading_time }} 分钟
+                        </div>
+                        <div class="post-meta-devide">|</div>
+                        <div class="post-meta-detail post-meta-detail-views">
+                            <i class="fa fa-eye" aria-hidden="true"></i> {{ post.object.views }}
+                        </div>
+                    </div>
+                    <a class="shuoshuo-preview-link btn btn-outline-primary btn-icon-only rounded-circle" type="button"
+                       href="{{ post.object.get_absolute_url_argon }}">
+                        <span class="btn-inner--icon"><i class="fa fa-arrow-right"></i></span>
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        <!-- pagination -->
+        <nav>
+            <ul class="pagination">
+                <li class="page-item">
+                    <a aria-label="First Page" class="page-link" href="?q={{ query }}&page=1">
+                        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                    </a>
+                </li>
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a aria-label="Previous Page" class="page-link"
+                           href="?{{ query }}&{{ page_obj.previous_page_number.querystring }}">
+                            <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a aria-label="Previous Page" class="page-link" href="">
+                            <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for page in page_obj.pages %}
+                    {% if page %}
+                        {% if page == page_obj.number %}
+                            <li class="page-item active"><a class="page-link" href="">{{ page }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link"
+                                                     href="?q={{ query }}&{{ page.querystring }}">{{ page }}</a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        ...
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a aria-label="Next Page" class="page-link"
+                           href="?q={{ query }}&{{ page_obj.next_page_number.querystring }}">
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a aria-label="Next Page" class="page-link" href="">
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="page-item">
+                    <a aria-label="Last Page" class="page-link" href="?q={{ query }}&page={{ paginator.num_pages }}">
+                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!--mobile pagination-->
+        <nav>
+            <ul class="pagination pagination-mobile">
+                <li class="page-item">
+                    <a aria-label="First Page" class="page-link" href="?page=1">
+                        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                    </a>
+                </li>
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a aria-label="Previous Page" class="page-link"
+                           href="?q={{ query }}&{{ page_obj.previous_page_number.querystring }}">
+                            <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a aria-label="Previous Page" class="page-link" href="">
+                            <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for page in page_obj.pages %}
+                    {% if page %}
+                        {% if page == page_obj.number %}
+                            <li class="page-item active"><a class="page-link" href="">{{ page }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link"
+                                                     href="?q={{ query }}&{{ page.querystring }}">{{ page }}</a>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        ...
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a aria-label="Next Page" class="page-link"
+                           href="?q={{ query }}&{{ page_obj.next_page_number.querystring }}">
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a aria-label="Next Page" class="page-link" href="">
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="page-item">
+                    <a aria-label="Last Page" class="page-link" href="?q={{ query }}&page={{ paginator.num_pages }}">
+                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock main %}

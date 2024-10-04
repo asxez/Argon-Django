@@ -1,0 +1,407 @@
+/*=========字体设置============*/
+/*网站字体*/
+/*原则上你可以设置多个字体，然后在不同的部位使用不同的字体。*/
+@font-face {
+    font-family: echo;
+    src: url('../font/HanTang.woff2') format('woff2')
+}
+
+body {
+    font-family: 'echo', "Chinese Quotes", "Inter var", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/*横幅字体大小*/
+.banner-title {
+    font-size: 2.5em;
+}
+
+.banner-subtitle {
+    font-size: 28px;
+    -webkit-text-fill-color: transparent;
+    background: linear-gradient(94.75deg, rgb(60, 172, 247) 0%, rgb(131, 101, 253) 43.66%, rgb(255, 141, 112) 64.23%, rgb(247, 201, 102) 83.76%, rgb(172, 143, 100) 100%);
+    -webkit-background-clip: text;
+}
+
+/*文章标题字体大小*/
+.post-title {
+    font-size: 25px
+}
+
+/*正文字体大小（不包含代码）*/
+.post-content p {
+    font-size: 1.25rem;
+}
+
+li {
+    font-size: 1.2rem;
+}
+
+/*评论区字体大小*/
+p {
+    font-size: 1.2rem
+}
+
+/*评论发送区字体大小*/
+.form-control {
+    font-size: 1.2rem
+}
+
+/*评论勾选项目字体大小*/
+.custom-checkbox .custom-control-input ~ .custom-control-label {
+    font-size: 1.2rem
+}
+
+/*评论区代码的强调色*/
+code {
+    color: rgba(var(--themecolor-rgbstr));
+}
+
+/*说说字体大小和颜色设置*/
+.shuoshuo-title {
+    font-size: 25px;
+    /*  color: rgba(var(--themecolor-rgbstr)); */
+}
+
+/*尾注字体大小*/
+.additional-content-after-post {
+    font-size: 1.2rem
+}
+
+/* 公告居中 */
+.leftbar-announcement-title {
+    font-size: 20px;
+    /* text-align: center; */
+    color: #00FFFF
+}
+
+.leftbar-announcement-content {
+    font-size: 15px;
+    line-height: 1.8;
+    padding-top: 8px;
+    opacity: 0.8;
+    /*     text-align: center; */
+    color: #00FFFF;
+}
+
+/* 一言居中 */
+.leftbar-banner-title {
+    font-size: 20px;
+    display: block;
+    text-align: center;
+    opacity: 0.8;
+}
+
+/* 个性签名居中 */
+.leftbar-banner-subtitle {
+    margin-top: 15px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    opacity: 0.8;
+    display: block;
+    text-align: center;
+}
+
+/*========颜色设置===========*/
+
+/*文章或页面的正文颜色*/
+body {
+    color: #364863
+}
+
+/*引文属性设置*/
+blockquote {
+    /*添加弱主题色为背景色*/
+    background: rgba(var(--themecolor-rgbstr), 0.1) !important;
+    width: 100%
+}
+
+/*引文颜色 建议用主题色*/
+:root {
+    /*也可以用类似于--color-border-on-foreground-deeper: #009688;这样的命令*/
+    --color-border-on-foreground-deeper: rgba(var(--themecolor-rgbstr));
+}
+
+/*左侧菜单栏突出颜色修改*/
+.leftbar-menu-item > a:hover, .leftbar-menu-item.current > a {
+    background-color: #f9f9f980;
+}
+
+/*站点概览分隔线颜色修改*/
+.site-state-item {
+    border-left: 1px solid #aaa;
+}
+
+.site-friend-links-title {
+    border-top: 1px dotted #aaa;
+}
+
+#leftbar_tab_tools ul li {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-bottom: none;
+}
+
+html.darkmode #leftbar_tab_tools ul li {
+    border-bottom: none;
+}
+
+/*左侧栏搜索框的颜色*/
+button#leftbar_search_container {
+    background-color: transparent;
+}
+
+/*========透明设置===========*/
+
+/*白天卡片背景透明*/
+.card {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    /*backdrop-filter:blur(6px);*//*毛玻璃效果主要属性*/
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/*小工具栏背景完全透明*/
+/*小工具栏是card的子元素，如果用同一个透明度会叠加变色，故改为完全透明*/
+.card .widget, .darkmode .card .widget, #post_content > div > div > div.argon-timeline-card.card.bg-gradient-secondary.archive-timeline-title {
+    background-color: #ffffff00 !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.emotion-keyboard, #fabtn_blog_settings_popup {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/*分类卡片透明*/
+.bg-gradient-secondary {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/*夜间透明*/
+html.darkmode.bg-white, html.darkmode .card, html.darkmode #footer {
+    background: rgba(140, 140, 140, 0.8) !important;
+}
+
+html.darkmode #fabtn_blog_settings_popup {
+    background: rgba(66, 66, 66, 0.95) !important;
+}
+
+/*标签背景
+.post-meta-detail-tag {
+    background:rgba(255, 255, 255, 0.5)!important;
+}*/
+
+/*========排版设置===========*/
+
+/*左侧栏层级置于上层*/
+#leftbar_part1 {
+    z-index: 1;
+}
+
+/*分类卡片文本居中*/
+#content > div.page-information-card-container > div > div {
+    text-align: center;
+}
+
+/*子菜单对齐及样式调整*/
+.dropdown-menu .dropdown-item > i {
+    width: 10px;
+}
+
+.dropdown-menu > a {
+    color: var(--themecolor);
+}
+
+.dropdown-menu {
+    min-width: max-content;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: .5rem 1.5rem 0.5rem 1rem;
+}
+
+.leftbar-menu-subitem {
+    min-width: max-content;
+}
+
+.leftbar-menu-subitem .leftbar-menu-item > a {
+    padding: 0rem 1.5rem 0rem 1rem;
+}
+
+/*左侧栏边距修改*/
+.tab-content {
+    padding: 10px 0px 0px 0px !important;
+}
+
+.site-author-links {
+    padding: 0px 0px 0px 10px;
+}
+
+/*目录位置偏移修改*/
+#leftbar_catalog {
+    margin-left: 0px;
+}
+
+/*目录条目边距修改*/
+#leftbar_catalog .index-link {
+    padding: 4px 4px 4px 4px;
+}
+
+/*左侧栏小工具栏字体缩小*/
+#leftbar_tab_tools {
+    font-size: 14px;
+}
+
+/*正文图片边距修改*/
+article figure {
+    margin: 0;
+}
+
+/*正文图片居中显示*/
+.fancybox-wrapper {
+    margin: auto;
+}
+
+/*正文表格样式修改*/
+article table > tbody > tr > td,
+article table > tbody > tr > th,
+article table > tfoot > tr > td,
+article table > tfoot > tr > th,
+article table > thead > tr > td,
+article table > thead > tr > th {
+    padding: 8px 10px;
+    border: 1px solid;
+}
+
+/*表格居中样式*/
+.wp-block-table.aligncenter {
+    margin: 10px auto;
+}
+
+/*回顶图标放大*/
+button#fabtn_back_to_top, button#fabtn_go_to_comment, button#fabtn_toggle_blog_settings_popup, button#fabtn_toggle_sides, button#fabtn_open_sidebar {
+    font-size: 1.2rem;
+}
+
+/*顶栏菜单放大*/
+/*这里也可以设置刚刚我们设置的btfFont字体。试试看！*/
+
+.navbar-nav .nav-link {
+    font-size: 1rem;
+    font-family: 'echo';
+
+}
+
+.navbar-brand {
+    font-family: 'echo';
+    font-size: 1.2rem;
+    margin-right: 1.0rem;
+    padding-bottom: 0.2rem;
+
+    -webkit-text-fill-color: transparent;
+    background: linear-gradient(94.75deg, rgb(60, 172, 247) 0%, rgb(131, 101, 253) 43.66%, rgb(255, 141, 112) 64.23%, rgb(247, 201, 102) 83.76%, rgb(172, 143, 100) 100%);
+    -webkit-background-clip: text;
+}
+
+/*菜单大小*/
+.nav-link-inner--text {
+    font-size: 1.25em;
+}
+
+.navbar-nav .nav-item {
+    margin-right: 0;
+}
+
+.mr-lg-5, .mx-lg-5 {
+    margin-right: 1rem !important;
+}
+
+.navbar-toggler-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+}
+
+/*菜单间距*/
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: 1.4em;
+    padding-left: 1.4em;
+}
+
+/*隐藏wp-SEO插件带来的线条阴影（不一定要装）*/
+*[style='position: relative; z-index: 99998;'] {
+    display: none;
+}
+
+/* Github卡片样式*/
+.github-info-card-header a {
+    /*Github卡片抬头颜色*/
+    color: black !important;
+    font-size: 1.5rem;
+}
+
+.github-info-card {
+    /*Github卡片文字（非链接）*/
+    font-size: 1rem;
+    color: black !important;
+}
+
+.github-info-card.github-info-card-full.card.shadow-sm {
+    /*Github卡片背景色*/
+    background-color: rgba(var(--themecolor-rgbstr), 0.1) !important;
+}
+
+/* 头像 */
+#leftbar_overview_author_image {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgba(127, 127, 127, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+
+#leftbar_overview_author_image:hover {
+    transform: scale(1.23);
+    filter: brightness(150%);
+}
+
+/* 名称	*/
+#leftbar_overview_author_name {
+    margin-top: 15px;
+    font-size: 18px;
+    align-content: center;
+    color: #00FFFF;
+}
+
+/* 简介 */
+#leftbar_overview_author_description {
+    font-size: 14px;
+    margin-top: -4px;
+    opacity: 0.8;
+    color: #c21f30;
+}
+
+/* 标题，链接等 */
+a, .btn-neutral {
+    color: #AF7AC5;
+
+}
+
+/* 页脚透明 */
+#footer {
+    background: var(--themecolor-gradient);
+    color: #fff;
+    width: 100%;
+    float: right;
+    margin-bottom: 25px;
+    text-align: center;
+    padding: 25px 20px;
+    line-height: 1.8;
+    transition: none;
+    opacity: 0.6;
+}

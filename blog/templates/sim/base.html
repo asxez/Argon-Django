@@ -1,0 +1,136 @@
+{% load static %}
+{% load blog_extras %}
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <title>SIMPLE</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- waline -->
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css"/>
+
+    <link rel="stylesheet" href="{% static 'blog/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{% static 'blog/css/pace.css' %}">
+    <link rel="stylesheet" href="{% static 'blog/css/custom.css' %}">
+
+{#    <!-- highlight -->#}
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.0.0/styles/a11y-light.min.css">
+
+    <script src="{% static 'blog/js/jquery-3.7.1.js' %}"></script>
+
+    <style>
+        .hljs-ln-numbers {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            text-align: center;
+            color: #ccc;
+            border-right: 1px solid #CCC;
+            vertical-align: top;
+            padding-right: 5px;
+        }
+
+        .hljs-ln-code {
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        span.highlighted {
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="container">
+    <header id="site-header">
+        <div class="row">
+            <div class="col-md-4 col-sm-5 col-xs-8">
+                <div class="logo">
+                    <h1><a href="{% url 'blog:sim' %}">SIMPLE</a></h1>
+                </div>
+            </div><!-- col-md-4 -->
+            <div class="col-md-8 col-sm-7 col-xs-4">
+                <nav class="main-nav" role="navigation">
+                    <div class="navbar-header">
+                        <button type="button" id="trigger-overlay" class="navbar-toggle">
+                            <span class="ion-navicon"></span>
+                        </button>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="cl-effect-11"><a href="{% url 'blog:sim' %}" data-hover="Home">Home</a></li>
+                            <!--                            <li class="cl-effect-11"><a href="full-width.html" data-hover="博客">博客</a></li>-->
+                            <li class="cl-effect-11"><a href="about.html" data-hover="About">About</a></li>
+                            <!--                            <li class="cl-effect-11"><a href="contact.html" data-hover="联系">联系</a></li>-->
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </nav>
+                <div id="header-search-box">
+                    <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
+                    <div id="search-form" class="search-form">
+                        <form role="search" method="get" id="searchform" action="{% url 'blog:sim_search' %}">
+                            <input type="search" name="q" placeholder="搜索" required>
+                            <button type="submit"><span class="ion-ios-search-strong"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- col-md-8 -->
+        </div>
+    </header>
+</div>
+
+
+<div class="content-body">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-8">
+                {% block main %}
+                {% endblock main %}
+            </main>
+            <aside class="col-md-4">
+                {% block toc %}
+                {% endblock toc %}
+            </aside>
+        </div>
+    </div>
+</div>
+<footer id="site-footer">
+    <div></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="copyright">&copy 2024 - ASXE</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Mobile Menu -->
+<div class="overlay overlay-hugeinc">
+    <button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            {#            <li><a href="full-width.html">博客</a></li>#}
+            <li><a href="about.html">About</a></li>
+            {#            <li><a href="contact.html">联系</a></li>#}
+        </ul>
+    </nav>
+</div>
+
+<link rel="stylesheet" href="{% static 'argon/css/vs2015.css' %}">
+<script src="{% static 'blog/js/script.js' %}"></script>
+
+</body>
+</html>

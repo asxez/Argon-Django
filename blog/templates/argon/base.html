@@ -1,0 +1,923 @@
+{% load static %}
+{% load blog_extras %}
+
+<!DOCTYPE html>
+<html lang="zh-Hans" class="no-js immersion-color use-big-shadow use-serif banner-as-cover article-header-style-2 ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <meta name="theme-color" content="#91C4EE">
+    <meta name="theme-color-rgb" content="145,196,238">
+    <meta name="theme-color-origin" content="#91c4ee">
+    <meta name="argon-enable-custom-theme-color" content="true">
+    <meta name="theme-card-radius" content="11.00">
+    <meta name="theme-card-radius-origin" content="15">
+    <title>ASXE</title>
+
+    <link rel='stylesheet' id='argon_css_merged-css' href='{% static 'argon/css/merged_css.css' %}' type="text/css"
+          media='all'/>
+    <link rel='stylesheet' id='style-css' href='{% static 'argon/css/style.css' %}' type="text/css" media='all'/>
+    {#        <link rel='stylesheet' id='wp-block-library-css'#}
+    {#              href='https://www.liveout.cn/wp-includes/css/dist/block-library/style.min.css?ver=6.6.2' type='text/css'#}
+    {#              media='all'/>#}
+    <script type="text/javascript" src="{% static 'argon/js/merged-js.js' %}" id="argon_js_merged-js"></script>
+    <script type="text/javascript" src="{% static 'argon/js/argonjs_js.js' %}" id="argonjs-js"></script>
+
+    {#smoothscroll#}
+    <script type="text/javascript" src="{% static 'argon/js/smoothscroll.js' %}"></script>
+
+    <!-- waline -->
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css"/>
+
+    {#设置#}
+    <link rel='stylesheet' href='{% static 'argon/css/settings.css' %}' type="text/css"/>
+
+    <script>
+        document.documentElement.classList.remove("no-js");
+        var argonConfig = {
+            wp_path: "/",
+            language: "zh_CN",
+            dateFormat: "YMD",
+            zoomify: false,
+            pangu: "article",
+            lazyload: {
+                threshold: 800,
+                effect: "fadeIn"
+            },
+            fold_long_comments: true,
+            fold_long_shuoshuo: true,
+            disable_pjax: false,
+            pjax_animation_durtion: 600,
+            headroom: "true",
+            waterflow_columns: "1",
+            code_highlight: {
+                enable: true,
+                hide_linenumber: true,
+                transparent_linenumber: false,
+                break_line: false
+            }
+        }
+    </script>
+
+    {#暗黑模式#}
+    <script type="text/javascript" src="{% static 'argon/js/darkmode.js' %}"></script>
+
+    <script>
+        if (navigator.userAgent.indexOf("Safari") !== -1 && navigator.userAgent.indexOf("Chrome") === -1) {
+            $("html").addClass("using-safari");
+        }
+    </script>
+</head>
+
+<style id="themecolor_css">
+    :root {
+        --themecolor: #91C4EE;
+        --themecolor-R: 145;
+        --themecolor-G: 196;
+        --themecolor-B: 238;
+        --themecolor-H: 207;
+        --themecolor-S: 73;
+        --themecolor-L: 75;
+    }
+</style>
+<style id="theme_cardradius_css">
+    :root {
+        --card-radius: 11px;
+    }
+</style>
+
+<body class="{{ body_class }}">
+<div id="toolbar">
+    <header class="header-global">
+        <nav id="navbar-main"
+             class="navbar navbar-main navbar-expand-lg navbar-transparent navbar-light bg-primary headroom--not-bottom headroom--not-top headroom--pinned">
+            <div class="container">
+                <button id="open_sidebar" class="navbar-toggler" type="button" aria-expanded="false"
+                        aria-label="Toggle sidebar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-brand mr-0">
+                    <a class="navbar-brand navbar-title" href="{% url 'blog:argon' %}">King</a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar_global">
+                    <div class="navbar-collapse-header">
+                        <div class="row" style="display: none;">
+                            <div class="col-6 collapse-brand"></div>
+                            <div class="col-6 collapse-close">
+                                <button type="button" class="navbar-toggler" data-toggle="collapse"
+                                        data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false"
+                                        aria-label="Toggle navigation">
+                                    <span></span>
+                                    <span></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="input-group input-group-alternative">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                            </div>
+                            <input id="navbar_search_input_mobile" class="form-control" placeholder="搜索什么..."
+                                   type="text" autocomplete="off">
+                        </div>
+                    </div>
+                    {#顶栏#}
+                    <ul class='navbar-nav navbar-nav-hover align-items-lg-center'>
+
+                        <li class='nav-item'>
+                            <a href='{% url 'blog:argon' %}' class='nav-link' target='' title=''>
+                                <i class='ni ni-book-bookmark d-lg-none'></i>
+                                <span class='nav-link-inner--text'><i class="fa fa-home"></i> 首页</span>
+                            </a>
+                        </li>
+
+                        <li class='nav-item'>
+                            <a href='{% url 'blog:argon_all_tag' %}' class='nav-link' target='' title='全部标签'>
+                                <i class='ni ni-book-bookmark d-lg-none'></i>
+                                <span class='nav-link-inner--text'>
+                                    <i class="fa fa-book" aria-hidden="true"></i> 文章
+                                </span>
+                            </a>
+                        </li>
+
+                        <li class='nav-item dropdown'>
+                            <a href='#' class='nav-link' data-toggle='dropdown'
+                               no-pjax onclick='return false;' title=''>
+                                <i class='ni ni-book-bookmark d-lg-none'></i>
+                                <span class='nav-link-inner--text'><i class="fa fa-paper-plane" aria-hidden="true"></i>友链</span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href='#' class='dropdown-item' target='' title=''>
+                                    <i class="fa fa-thumbs-up" aria-hidden="true"></i> 打赏
+                                </a>
+                                <a href='#' class='dropdown-item' target='' title=''>
+                                    <i class="fa fa-link" aria-hidden="true"></i> 朋友
+                                </a>
+                            </div>
+                        </li>
+
+                        <li class='nav-item'>
+                            <a href='#' class='nav-link' target='' title=''>
+                                <i class='ni ni-book-bookmark d-lg-none'></i>
+                                <span class='nav-link-inner--text'><i class="fa fa-question-circle"
+                                                                      aria-hidden="true"></i>关于</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+                        <li id="navbar_search_container" class="nav-item" data-toggle="modal">
+                            <div id="navbar_search_input_container">
+                                <div class="input-group input-group-alternative">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                                    </div>
+                                    <input id="navbar_search_input" class="form-control" placeholder="搜索什么..."
+                                           type="text" autocomplete="off">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="navbar_menu_mask" data-toggle="collapse" data-target="#navbar_global"></div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global"
+                        aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon navbar-toggler-searcg-icon"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+</div>
+
+<div class="modal fade" id="argon_search_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">搜索</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="argon_serach_form" method="get" action="#">
+                    <div class="form-group mb-3">
+                        <div class="input-group input-group-alternative">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-search"></i></span>
+                            </div>
+                            <input name="q" class="form-control" placeholder="搜索什么..." type="text"
+                                   autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button onclick="if($('#argon_serach_form input[name=\'q\']').val() != '') {document.getElementById('argon_serach_form').submit();}"
+                                type="button" class="btn btn-primary">搜索
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Banner-->
+<section id="banner" class="banner section section-lg section-shaped">
+    <div class="shape  shape-primary">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    {#大屏正中#}
+    <div id="banner_container" class="banner-container container text-center">
+        <div class="banner-title text-white" data-interval="100">
+            <span data-text="Asxe's blog" class="banner-title-inner">&nbsp;</span>
+            <span data-text="路漫漫其修远兮 吾将上下而求索" class="banner-subtitle d-block">&nbsp;</span>
+        </div>
+    </div>
+    <div class="cover-scroll-down">
+        <i class="fa fa-angle-down" aria-hidden="true"></i>
+    </div>
+</section>
+
+{#背景#}
+<style>
+    #banner, #banner .shape {
+        background: transparent !important;
+    }
+
+    #content:before {
+        content: '';
+        display: block;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: -2;
+        background: url('{% static '/argon/image/0503.webp' %}');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        opacity: 1;
+        transition: opacity .5s ease;
+    }
+
+    html.darkmode #content:before {
+        filter: brightness(0.65);
+    }
+
+    #content:after {
+        content: '';
+        display: block;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: -2;
+        background: url('{% static '/argon/image/0602.webp' %}');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        opacity: 0;
+        transition: opacity .5s ease;
+    }
+
+    html.darkmode #content:after {
+        opacity: 1;
+    }
+
+    html.darkmode #content:before {
+        opacity: 0;
+    }
+</style>
+
+<style>
+    #banner:after {
+        content: '';
+        width: 100vw;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 120px;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.15) 35%, rgba(0, 0, 0, 0) 100%);
+        display: block;
+        z-index: -1;
+    }
+
+    .banner-title {
+        text-shadow: 0 5px 15px rgba(0, 0, 0, .2);
+    }
+</style>
+
+{#右侧栏#}
+<div id="float_action_buttons" class="float-action-buttons fabtns-unloaded">
+    <button id="fabtn_toggle_sides" class="btn btn-icon btn-neutral fabtn shadow-sm" type="button" aria-hidden="true"
+            tooltip-move-to-left="移至左侧" tooltip-move-to-right="移至右侧">
+        <span class="btn-inner--icon fabtn-show-on-right"><i class="fa fa-caret-left"></i></span>
+        <span class="btn-inner--icon fabtn-show-on-left"><i class="fa fa-caret-right"></i></span>
+    </button>
+    <button id="fabtn_back_to_top" class="btn btn-icon btn-neutral fabtn shadow-sm" type="button"
+            aria-label="Back To Top" tooltip="回到顶部">
+        <span class="btn-inner--icon"><i class="fa fa-angle-up"></i></span>
+    </button>
+    <button id="fabtn_go_to_comment" class="btn btn-icon btn-neutral fabtn shadow-sm d-none" type="button"
+            aria-label="Comment" tooltip="评论">
+        <span class="btn-inner--icon"><i class="fa fa-comment-o"></i></span>
+    </button>
+    <button id="fabtn_toggle_darkmode" class="btn btn-icon btn-neutral fabtn shadow-sm" type="button"
+            aria-label="Toggle Darkmode" tooltip-darkmode="夜间模式" tooltip-blackmode="暗黑模式"
+            tooltip-lightmode="日间模式">
+        <span class="btn-inner--icon"><i class="fa fa-moon-o"></i><i class='fa fa-lightbulb-o'></i></span>
+    </button>
+    <button id="fabtn_toggle_blog_settings_popup" class="btn btn-icon btn-neutral fabtn shadow-sm" type="button"
+            aria-label="Open Blog Settings Menu" tooltip="设置">
+        <span class="btn-inner--icon"><i class="fa fa-cog"></i></span>
+    </button>
+    <div id="fabtn_blog_settings_popup" class="card shadow-sm" style="opacity: 0;" aria-hidden="true">
+        <div id="close_blog_settings"><i class="fa fa-close"></i></div>
+        <div class="blog-setting-item mt-3">
+            <div style="transform: translateY(-4px);">
+                <div id="blog_setting_toggle_darkmode_and_amoledarkmode" tooltip-switch-to-darkmode="切换到夜间模式"
+                     tooltip-switch-to-blackmode="切换到暗黑模式">
+                    <span>夜间模式</span>
+                    <span>暗黑模式</span>
+                </div>
+            </div>
+            <div style="flex: 1;"></div>
+            <label id="blog_setting_darkmode_switch" class="custom-toggle">
+                <span class="custom-toggle-slider rounded-circle"></span>
+            </label>
+        </div>
+        <div class="blog-setting-item mt-3">
+            <div style="flex: 1;">字体</div>
+            <div>
+                <button id="blog_setting_font_sans_serif" type="button"
+                        class="blog-setting-font btn btn-outline-primary blog-setting-selector-left">Sans Serif
+                </button>
+                <button id="blog_setting_font_serif" type="button"
+                        class="blog-setting-font btn btn-outline-primary blog-setting-selector-right">Serif
+                </button>
+            </div>
+        </div>
+        <div class="blog-setting-item mt-3">
+            <div style="flex: 1;">阴影</div>
+            <div>
+                <button id="blog_setting_shadow_small" type="button"
+                        class="blog-setting-shadow btn btn-outline-primary blog-setting-selector-left">浅阴影
+                </button>
+                <button id="blog_setting_shadow_big" type="button"
+                        class="blog-setting-shadow btn btn-outline-primary blog-setting-selector-right">深阴影
+                </button>
+            </div>
+        </div>
+        <div class="blog-setting-item mt-3 mb-3">
+            <div style="flex: 1;">滤镜</div>
+            <div id="blog_setting_filters" class="ml-3">
+                <button id="blog_setting_filter_off" type="button" class="blog-setting-filter-btn ml-0"
+                        filter-name="off">关闭
+                </button>
+                <button id="blog_setting_filter_sunset" type="button" class="blog-setting-filter-btn"
+                        filter-name="sunset">日落
+                </button>
+                <button id="blog_setting_filter_darkness" type="button" class="blog-setting-filter-btn"
+                        filter-name="darkness">暗化
+                </button>
+                <button id="blog_setting_filter_grayscale" type="button" class="blog-setting-filter-btn"
+                        filter-name="grayscale">灰度
+                </button>
+            </div>
+        </div>
+        <div class="blog-setting-item mb-3">
+            <div id="blog_setting_card_radius_to_default" style="cursor: pointer;" tooltip="恢复默认">圆角</div>
+            <div style="flex: 1;margin-left: 20px;margin-right: 8px;transform: translateY(2px);">
+                <div id="blog_setting_card_radius"></div>
+            </div>
+        </div>
+        <div class="blog-setting-item mt-1 mb-3">
+            <div style="flex: 1;">主题色</div>
+            <div id="theme-color-picker" class="ml-3"></div>
+        </div>
+    </div>
+    <button id="fabtn_reading_progress" class="btn btn-icon btn-neutral fabtn shadow-sm" type="button"
+            aria-hidden="true" tooltip="阅读进度">
+        <div id="fabtn_reading_progress_bar" style="width: 0;"></div>
+        <span id="fabtn_reading_progress_details">0%</span>
+    </button>
+</div>
+
+
+<div id="content" class="site-content">
+    <div class="page-information-card-container">
+        {% if page_information_show %}
+            <div class="page-information-card card bg-gradient-secondary shadow-lg border-0">
+                <div class="card-body">
+                    <h3 class="text-black"> {{ type }}： <span>{{ name }}</span></h3>
+                    <p class="text-black mt-3 mb-0 opacity-8">
+                        <i class="fa fa-file-o mr-1"></i>
+                        {{ num }} 篇文章
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div id="sidebar_mask"></div>
+
+    {#左栏#}
+    <aside id="leftbar" class="leftbar widget-area" role="complementary">
+        {#左1栏#}
+        <div id="leftbar_announcement" class="card bg-white shadow-sm border-0">
+            <div class="leftbar-announcement-body">
+                <div class="leftbar-announcement-title ">公告栏</div>
+                <div class="leftbar-announcement-content text-white">
+                    <font color="#000000"><b>一万年太久，只争朝夕</b></font>
+                </div>
+            </div>
+        </div>
+        {#左2栏#}
+        <div id="leftbar_part1" class="widget widget_search card bg-white shadow-sm border-0">
+            <div class="leftbar-banner card-body">
+                <span class="leftbar-banner-title text-white">片刻</span>
+                <span class="leftbar-banner-subtitle text-white ">他年我若为青帝 报与桃花一处开</span>
+            </div>
+
+            <ul id='leftbar_part1_menu' class='leftbar-menu'>
+                <li class='leftbar-menu-item'>
+                    <a href='{% url 'blog:argon' %}' target=''><i class="fa fa-home"></i> 首页</a>
+                </li>
+                <li class='leftbar-menu-item'>
+                    <a href='{% url 'blog:argon_all_tag' %}' target=''><i class="fa fa-book" aria-hidden="true"></i> 文章</a>
+                </li>
+                <li class='leftbar-menu-item'>
+                    <a href='{% url 'blog:argon_archive' %}' target=''><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        归档</a>
+                </li>
+            </ul>
+        </div>
+        {#左3栏#}
+        <div id="leftbar_part2" class="widget widget_search card bg-white shadow-sm border-0">
+            <div id="leftbar_part2_inner" class="card-body">
+                <div class="nav-wrapper" style="padding-top: 5px;">
+                    <ul class="nav nav-pills nav-fill" role="tablist">
+                        {% if show_toc_top %}
+                            <li class="nav-item sidebar-tab-switcher">
+                                <a class="active show" id="leftbar_tab_catalog_btn" data-toggle="tab"
+                                   href="#leftbar_tab_catalog" role="tab" aria-controls="leftbar_tab_catalog"
+                                   no-pjax>文章目录</a>
+                            </li>
+                            <li class="nav-item sidebar-tab-switcher">
+                                <a class="" id="leftbar_tab_overview_btn" data-toggle="tab"
+                                   href="#leftbar_tab_overview" role="tab" aria-controls="leftbar_tab_overview"
+                                   no-pjax>个人简介
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item sidebar-tab-switcher">
+                                <a class="active show" id="leftbar_tab_overview_btn" data-toggle="tab"
+                                   href="#leftbar_tab_overview" role="tab" aria-controls="leftbar_tab_overview"
+                                   no-pjax>个人简介
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div>
+                    <div class="tab-content" style="padding: 10px 10px 0 10px;">
+                        {% if show_toc_top %}
+                            <div class="tab-pane fade active show" id="leftbar_tab_catalog" role="tabpanel"
+                                 aria-labelledby="leftbar_tab_catalog_btn">
+                                <div id="leftbar_catalog"></div>
+                                <script type="text/javascript">
+                                    $(function () {
+                                        $(document).headIndex({
+                                            articleWrapSelector: '#post_content',
+                                            indexBoxSelector: '#leftbar_catalog',
+                                            subItemBoxClass: "index-subItem-box",
+                                            itemClass: "index-item",
+                                            linkClass: "index-link",
+                                            offset: 80,
+                                        });
+                                    });
+                                </script>
+                            </div>
+                            <div class="tab-pane fade text-center" id="leftbar_tab_overview" role="tabpanel"
+                                 aria-labelledby="leftbar_tab_overview_btn">
+                                <a href="{% url 'blog:argon' %}">
+                                    <div id="leftbar_overview_author_image"
+                                         style="background-image: url({% static 'argon/image/avatar.webp' %})"
+                                         class="rounded-circle shadow-sm" alt="avatar">
+                                    </div>
+                                </a>
+
+                                <a href="{% url 'blog:argon' %}">
+                                    <h6 id="leftbar_overview_author_name">ASXE</h6>
+                                    <h6 id="leftbar_overview_author_description">···我思故我在···</h6>
+                                    <nav class="site-state">
+                                        <div class="site-state-item site-state-posts">
+                                            <a href="{% url 'blog:argon_archive' %}">
+                                                <span class="site-state-item-count">{{ post_count }}</span>
+                                                <span class="site-state-item-name">文章</span>
+                                            </a>
+                                        </div>
+                                        <div class="site-state-item site-state-categories">
+                                            <a data-toggle="modal" data-target="#blog_categories">
+                                                <span class="site-state-item-count">{{ category_count }}</span>
+                                                <span class="site-state-item-name">分类</span>
+                                            </a>
+                                        </div>
+                                        <div class="site-state-item site-state-tags">
+                                            <a data-toggle="modal" data-target="#blog_tags">
+                                                <span class="site-state-item-count">{{ tag_count }}</span>
+                                                <span class="site-state-item-name">标签</span>
+                                            </a>
+                                        </div>
+                                    </nav>
+
+                                    <div class='site-author-links'>
+                                        <div class='site-author-links-item'>
+                                            <a href='https://github.com/asxez' rel='noopener' target='_blank'>
+                                                <i class="fa fa-github" aria-hidden="true"></i> GitHub
+                                            </a>
+                                        </div>
+                                        <div class='site-author-links-item'>
+                                            <a href='{% url 'blog:rss' %}' rel='noopener' target='_blank'>
+                                                <i class="fa fa-rss" aria-hidden="true"></i> RSS
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class='site-friend-links'>
+                                        <div class='site-friend-links-title'>
+                                            <i class='fa fa-fw fa-link'></i> Links
+                                        </div>
+                                        <ul class='site-friend-links-ul'>
+                                            <li class='site-friend-links-item'>
+                                                <a href='#' rel='noopener' target='_blank'>
+                                                    <i class="fa fa-music" aria-hidden="true"></i> Music
+                                                </a>
+                                            </li>
+
+                                            <li class='site-friend-links-item'>
+                                                <a href='#' rel='noopener' target='_blank'>
+                                                    <i class="fa fa-youtube-play" aria-hidden="true"></i> Bilibili
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </a>
+                            </div>
+                            </div>
+                        {% else %}
+                            <div class="tab-content" style="padding: 10px 10px 0 10px;">
+                                <div class="tab-pane fade text-center active show" id="leftbar_tab_overview"
+                                     role="tabpanel"
+                                     aria-labelledby="leftbar_tab_overview_btn">
+                                    <a href="{% url 'blog:argon' %}">
+                                        <div id="leftbar_overview_author_image"
+                                             style="background-image: url({% static 'argon/image/avatar.webp' %})"
+                                             class="rounded-circle shadow-sm" alt="avatar">
+                                        </div>
+                                    </a>
+
+                                    <a href="{% url 'blog:argon' %}">
+                                        <h6 id="leftbar_overview_author_name">ASXE</h6>
+                                        <h6 id="leftbar_overview_author_description">···我思故我在···</h6>
+                                        <nav class="site-state">
+                                            <div class="site-state-item site-state-posts">
+                                                <a href="{% url 'blog:argon_archive' %}">
+                                                    <span class="site-state-item-count">{{ post_count }}</span>
+                                                    <span class="site-state-item-name">文章</span>
+                                                </a>
+                                            </div>
+                                            <div class="site-state-item site-state-categories">
+                                                <a data-toggle="modal" data-target="#blog_categories">
+                                                    <span class="site-state-item-count">{{ category_count }}</span>
+                                                    <span class="site-state-item-name">分类</span>
+                                                </a>
+                                            </div>
+                                            <div class="site-state-item site-state-tags">
+                                                <a data-toggle="modal" data-target="#blog_tags">
+                                                    <span class="site-state-item-count">{{ tag_count }}</span>
+                                                    <span class="site-state-item-name">标签</span>
+                                                </a>
+                                            </div>
+                                        </nav>
+
+                                        <div class='site-author-links'>
+                                            <div class='site-author-links-item'>
+                                                <a href='https://github.com/asxez' rel='noopener' target='_blank'>
+                                                    <i class="fa fa-github" aria-hidden="true"></i> GitHub
+                                                </a>
+                                            </div>
+                                            <div class='site-author-links-item'>
+                                                <a href='{% url 'blog:rss' %}' rel='noopener' target='_blank'>
+                                                    <i class="fa fa-rss" aria-hidden="true"></i> RSS
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class='site-friend-links'>
+                                            <div class='site-friend-links-title'>
+                                                <i class='fa fa-fw fa-link'></i> Links
+                                            </div>
+                                            <ul class='site-friend-links-ul'>
+                                                <li class='site-friend-links-item'>
+                                                    <a href='#' rel='noopener' target='_blank'>
+                                                        <i class="fa fa-music" aria-hidden="true"></i> Music
+                                                    </a>
+                                                </li>
+
+                                                <li class='site-friend-links-item'>
+                                                    <a href='#' rel='noopener' target='_blank'>
+                                                        <i class="fa fa-youtube-play" aria-hidden="true"></i> Bilibili
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    {% argon_category_list %}
+    {% argon_tags %}
+
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main {{ main_class }}" role="main">
+            {% block main %}
+            {% endblock main %}
+
+            <footer id="footer" class="site-footer card shadow-sm border-0">
+                <style>
+                    /* 核心样式 */
+                    .github-badge {
+                        display: inline-block;
+                        border-radius: 4px;
+                        text-shadow: none;
+                        font-size: 13.1px;
+                        color: #fff;
+                        line-height: 15px;
+                        margin-bottom: 5px;
+                        font-family: "Open Sans", sans-serif;
+                    }
+
+                    .github-badge .badge-subject {
+                        display: inline-block;
+                        background-color: #4d4d4d;
+                        padding: 4px 4px 4px 6px;
+                        border-top-left-radius: 4px;
+                        border-bottom-left-radius: 4px;
+                        font-family: "Open Sans", sans-serif;
+                    }
+
+                    .github-badge .badge-value {
+                        display: inline-block;
+                        padding: 4px 6px 4px 4px;
+                        border-top-right-radius: 4px;
+                        border-bottom-right-radius: 4px;
+                        font-family: "Open Sans", sans-serif;
+                    }
+
+                    .github-badge-big {
+                        display: inline-block;
+                        border-radius: 6px;
+                        text-shadow: none;
+                        font-size: 14.1px;
+                        color: #fff;
+                        line-height: 18px;
+                        margin-bottom: 7px;
+                    }
+
+                    .github-badge-big .badge-subject {
+                        display: inline-block;
+                        background-color: #4d4d4d;
+                        padding: 4px 4px 4px 6px;
+                        border-top-left-radius: 4px;
+                        border-bottom-left-radius: 4px;
+                    }
+
+                    .github-badge-big .badge-value {
+                        display: inline-block;
+                        padding: 4px 6px 4px 4px;
+                        border-top-right-radius: 4px;
+                        border-bottom-right-radius: 4px;
+                    }
+
+                    .bg-orange {
+                        background-color: #ec8a64 !important;
+                    }
+
+                    .bg-red {
+                        background-color: #cb7574 !important;
+                    }
+
+                    .bg-apricots {
+                        background-color: #f7c280 !important;
+                    }
+
+                    .bg-casein {
+                        background-color: #dfe291 !important;
+                    }
+
+                    .bg-shallots {
+                        background-color: #97c3c6 !important;
+                    }
+
+                    .bg-ogling {
+                        background-color: #95c7e0 !important;
+                    }
+
+                    .bg-haze {
+                        background-color: #9aaec7 !important;
+                    }
+
+                    .bg-mountain-terrier {
+                        background-color: #99a5cd !important;
+                    }
+                </style>
+                <div class="github-badge-big">
+                    <span class="badge-subject"><i class="fa fa-copyright"
+                                                   aria-hidden="true"></i> Copyright @ASXE 2024</span>
+                </div>
+                <div class="github-badge-big">
+                    <span class="badge-subject"><i class="fa fa-clock-o"></i> Running Time</span>
+                    <span class="badge-value bg-apricots">
+                        <span id="blog_running_days" class="odometer odometer-auto-theme"></span> days
+                        <span id="blog_running_hours" class="odometer odometer-auto-theme"></span> H
+                        <span id="blog_running_mins" class="odometer odometer-auto-theme"></span> M
+                        <span id="blog_running_secs" class="odometer odometer-auto-theme"></span>S
+                    </span>
+                    <script no-pjax="">
+                        var blog_running_days = document.getElementById("blog_running_days");
+                        var blog_running_hours = document.getElementById("blog_running_hours");
+                        var blog_running_mins = document.getElementById("blog_running_mins");
+                        var blog_running_secs = document.getElementById("blog_running_secs");
+                        var BootDate = new Date("2024/9/13 13:15");
+
+                        function refresh_blog_running_time() {
+                            var NowDate = new Date();
+                            var RunDateM = parseInt((NowDate - BootDate).toString());
+                            var RunDays = Math.floor(RunDateM / (24 * 3600 * 1000));
+                            var RunHours = Math.floor(RunDateM % (24 * 3600 * 1000) / (3600 * 1000));
+                            var RunMinutes = Math.floor(RunDateM % (24 * 3600 * 1000) % (3600 * 1000) / (60 * 1000));
+                            var RunSeconds = Math.round(RunDateM % (24 * 3600 * 1000) % (3600 * 1000) % (60 * 1000) / 1000);
+                            blog_running_days.innerHTML = RunDays.toString();
+                            blog_running_hours.innerHTML = RunHours.toString();
+                            blog_running_mins.innerHTML = RunMinutes.toString();
+                            blog_running_secs.innerHTML = RunSeconds.toString();
+                        }
+
+                        refresh_blog_running_time();
+                        if (typeof bottomTimeIntervalHasSet == "undefined") {
+                            var bottomTimeIntervalHasSet = true;
+                            setInterval(function () {
+                                refresh_blog_running_time();
+                            }, 1000);
+                        }
+                    </script>
+                </div>
+                <div>
+                    <a href="https://github.com/solstice23/argon-theme" target="_blank">
+                        <strong>Theme From Argon</strong>
+                    </a>
+                </div>
+            </footer>
+        </main>
+    </div>
+</div>
+<script src="{% static 'argon/js/argontheme.js' %}"></script>
+
+{#highlight#}
+<link rel="stylesheet" href="{% static 'argon/css/vs2015.css' %}">
+
+<!--全页特效开始-->
+<script src="https://cdn.bootcdn.net/ajax/libs/mobile-detect/1.4.5/mobile-detect.js"></script>
+<script type="text/javascript">
+    // 设备检测
+    var md = new MobileDetect(window.navigator.userAgent);
+
+    // PC生效，手机/平板不生效
+    // md.mobile(); md.phone();
+    if (!md.phone()) {
+        if (!md.tablet()) {
+            // 雪花
+            // $.getScript("https://cdn.jsdelivr.net/gh/huangwb8/bloghelper@latest/js/xiaxue.js");
+
+            // 樱花
+            // $.getScript("https://cdn.jsdelivr.net/gh/huangwb8/bloghelper@latest/js/yinghua.js");
+
+            // 小烟花特效
+            // $.getScript("https://cdn.jsdelivr.net/gh/huangwb8/bloghelper@latest/js/mouse-click.js");
+
+            // 大烟花特效
+            //  $.getScript("https://cdn.jsdelivr.net/gh/huangwb8/bloghelper@latest/mouse/mouse-click-02/mouse-canvas.js");
+            //  document.write('<style>#mouse-canvas {z-index:217483647; pointer-events: none;  box-sizing: border-box !important; display: block !important; //position: fixed !important; left: 0; right: 0; top: 0; bottom: 0; width: 100%; height: 100vh;}</style>')
+
+            // 鼠标移动的仙女棒特效
+            $.getScript('{% static 'argon/js/fairyDustCursor.min.js' %}')
+        }
+    }
+</script>
+<!--全页特效结束-->
+
+<!--鼠标指针特效2 开始-->
+<style type="text/css">
+    .main-content img, body {
+        cursor: url({% static 'argon/cur/Arrow.cur' %}), auto
+    }
+
+    .actions > div, .expand-done, .main-content figure > figcaption div, .navbar-above .navbar-nav .item, .navbar-searchicon, .navbar-slideicon, .photos .picture-details, .widget .ad-tag .click-close, a, button {
+        cursor: url({% static 'argon/cur/Hand.cur' %}), auto
+    }
+
+    blockquote, code, h1, h2, h3, h4, h5, h6, hr, input[type=text], li, p, td, textarea, th {
+        cursor: url({% static 'argon/cur/IBeam.cur' %}), auto
+    }
+</style>
+<!--鼠标指针特效2 结束-->
+
+<!--鼠标悬停3D效果start-->
+<!--1.定义对象属性（似乎没生效）-->
+<div class="article.post:not(.post-full)" data-tilt></div>
+<div class=".shuoshuo-preview-container" data-tilt></div>
+<!--2.JS脚本-->
+<script type="text/javascript" src="{% static 'argon/js/vanilla-tilt.min.js' %}"></script>
+<!--3.动作-->
+<script type="text/javascript">
+    // 设备检测。依赖前述mobile-detect项目。
+    var md = new MobileDetect(window.navigator.userAgent);
+
+    // PC生效，手机/平板不生效
+    // md.mobile(); md.phone();
+    if (!md.phone() && !md.tablet()) {
+        window.pjaxLoaded = function () {
+            // 正文卡片
+            VanillaTilt.init(document.querySelectorAll("article.post:not(.post-full)"), {
+                reverse: false,  // 是否反转倾斜方向
+                max: 2,     // 最大的倾斜角度(度)
+                startX: 0,      // X轴上的起始倾斜，单位为度。
+                startY: 0,      // Y轴上的起始倾斜，单位为度。
+                perspective: 1000,   // 转换角度，越低倾斜越极端
+                scale: 1.02,      // 缩放比例,2 = 200%, 1.5 = 150%, 等等..
+                speed: 300,    // 进入/退出 过渡的速度
+                transition: true,   // 是否在进入/退出的时候设置过渡效果
+                axis: "y",   // 设置禁用哪个轴的反转,值为"x"或者"y"或者null
+                reset: true,   // 设置在退出时清除倾斜效果
+                easing: "cubic-bezier(.03,.98,.52,.99)",    // 设置进入退出时过渡的贝塞尔曲线
+                glare: true,// 设置是否拥有炫光效果,即透明度渐变效果
+                "max-glare": 0.7,      // 设置最大的透明效果,1=100%,0.5=50%
+                "glare-prerender": false,  // false, VanillaTilt为你创建透明炫光元素,否则你需要自己在.jstilt-glare>.js-tilt-glare-inner中自己添加render函数
+                "mouse-event-element": null,   // css选择器或者链接到HTML的元素,他将监听该元素上的鼠标事件
+                "full-page-listening": false,  // 是否监听整个页面的鼠标移动事件,若为true,他将监听这个页面,而非选中元素
+                gyroscope: false,   // 是否开启陀螺仪的方向检测
+                gyroscopeMinAngleX: 0,  //陀螺仪最小角度X
+                gyroscopeMaxAngleX: 0,  //陀螺仪最大角度X
+                gyroscopeMinAngleY: 0,  //陀螺仪最小角度
+                gyroscopeMaxAngleY: 0,  //陀螺仪最大角度
+                gyroscopeSamples: 10  //陀螺仪样品
+            });
+
+            // 说说卡片
+            VanillaTilt.init(document.querySelectorAll(".shuoshuo-preview-container"), {
+                reverse: false,  // 是否反转倾斜方向
+                max: 2,     // 最大的倾斜角度(度)
+                startX: 0,      // X轴上的起始倾斜，单位为度。
+                startY: 0,      // Y轴上的起始倾斜，单位为度。
+                perspective: 1000,   // 转换角度，越低倾斜越极端
+                scale: 1,      // 缩放比例,2 = 200%, 1.5 = 150%, 等等..
+                speed: 300,    // 进入/退出 过渡的速度
+                transition: true,   // 是否在进入/退出的时候设置过渡效果
+                axis: "y",   // 设置禁用哪个轴的反转,值为"x"或者"y"或者null
+                reset: true,   // 设置在退出时清除倾斜效果
+                easing: "cubic-bezier(.03,.98,.52,.99)",    // 设置进入退出时过渡的贝塞尔曲线
+                glare: true,// 设置是否拥有炫光效果,即透明度渐变效果
+                "max-glare": 0.7,      // 设置最大的透明效果,1=100%,0.5=50%
+                "glare-prerender": false,  // false, VanillaTilt为你创建透明炫光元素,否则你需要自己在.jstilt-glare>.js-tilt-glare-inner中自己添加render函数
+                "mouse-event-element": null,   // css选择器或者链接到HTML的元素,他将监听该元素上的鼠标事件
+                "full-page-listening": false,  // 是否监听整个页面的鼠标移动事件,若为true,他将监听这个页面,而非选中元素
+                gyroscope: false,   // 是否开启陀螺仪的方向检测
+                gyroscopeMinAngleX: 0,  //陀螺仪最小角度X
+                gyroscopeMaxAngleX: 0,  //陀螺仪最大角度X
+                gyroscopeMinAngleY: 0,  //陀螺仪最小角度
+                gyroscopeMaxAngleY: 0,  //陀螺仪最大角度
+                gyroscopeSamples: 10  //陀螺仪样品
+            });
+        }
+        $(window.pjaxLoaded);
+        $(document).on('pjax:end', window.pjaxLoaded);
+    }
+</script>
+<!--鼠标悬停3D效果end-->
+</body>
+</html>

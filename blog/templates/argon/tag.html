@@ -1,0 +1,22 @@
+{% extends 'argon/base.html' %}
+
+{% block main %}
+    <article class="post post-full card bg-white shadow-sm border-0" id="post-tag"
+             class="post-tag post type-post status-publish format-standard hentry">
+        <header class="post-header text-center">
+            <a class="post-title" href="">全部标签</a>
+        </header>
+        <style>
+            .tag.post-meta-detail-tag {
+                font-size: 18px;
+            }
+        </style>
+        <div class="post-content" id="post_content">
+            {% for tag in tag_list %}
+                <a href='{% url 'blog:argon_tag' tag.name %}' target='_blank'
+                   class='tag badge badge-secondary post-meta-detail-tag'>{{ tag.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </article>
+{% endblock main %}

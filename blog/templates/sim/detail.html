@@ -1,0 +1,49 @@
+{% extends 'sim/base.html' %}
+
+{% block main %}
+    <article class="post post-1">
+        <header class="entry-header">
+            <h1 class="entry-title">{{ post.title }}</h1>
+            <div class="entry-meta">
+                <span class="post-category"><a href="#">{{ post.category }}</a></span>
+                <span class="post-date"><a href="#"><time class="entry-date"
+                                                          datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
+                <span class="post-author"><a href="#">{{ post.author }}</a></span>
+                <span class="comments-link"><a href="#" class="waline-comment-count"></a>&nbsp;comments</span>
+                <span class="views-count"><a href="#">{{ post.views }} pageviews</a></span>
+            </div>
+        </header>
+        <div class="entry-content clearfix post-content" id="post_content">
+            {{ post.body_html | safe }}
+        </div>
+    </article>
+
+    <!-- highlight -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.0.0/highlight.min.js"></script>
+{#    <script src="https://cdn.bootcdn.net/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>#}
+    <script>
+        hljs.highlightAll();
+        {#hljs.initLineNumbersOnLoad();#}
+    </script>
+
+    <!-- waline -->
+    <div id="waline" class="comment-area"></div>
+    <script type="module">
+        import {init} from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+        init({
+            el: '#waline',
+            serverURL: 'https://comments.asxe.vip/',
+            comment: true,
+        });
+    </script>
+{% endblock main %}
+
+{% block toc %}
+    {% if post.toc %}
+        <div class="widget widget-content">
+            <h3 class="widget-title">List</h3>
+            {{ post.toc | safe }}
+        </div>
+    {% endif %}
+{% endblock toc %}

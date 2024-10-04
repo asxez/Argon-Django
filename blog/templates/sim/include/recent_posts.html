@@ -1,0 +1,12 @@
+<div class="widget widget-recent-posts">
+    <h3 class="widget-title">Recent Posts</h3>
+    <ul>
+        {% for recent_post in recent_posts %}
+            <li>
+                <a href="{{ recent_post.get_absolute_url }}">{{ recent_post.title }}</a>
+            </li>
+            {% empty %}
+            No recent posts !
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,13 @@
+<div class="widget widget-category">
+    <h3 class="widget-title">Categories</h3>
+    <ul>
+        {% for category in category_list %}
+            <li>
+                <a href="{% url 'blog:sim_category' category.name %}">{{ category.name }} <span
+                        class="post-count">({{ category.num_posts }})</span></a>
+            </li>
+            {% empty %}
+            No category !
+        {% endfor %}
+    </ul>
+</div>

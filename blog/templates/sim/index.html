@@ -1,0 +1,60 @@
+{% extends 'sim/base.html' %}
+{% load blog_extras %}
+
+{% block main %}
+    {% for post in post_list %}
+        <article class="post post-{{ post.pk }}">
+            <header class="entry-header">
+                <h1 class="entry-title">
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                </h1>
+                <div class="entry-meta">
+                    <span class="post-category"><a href="#">{{ post.category.name }}</a></span>
+                    <span class="post-date"><a href="#"><time class="entry-date"
+                                                              datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
+                    <span class="post-author"><a href="#">{{ post.author }}</a></span>
+                    <span class="comments-link"><a href="#" class="waline-comment-count-{{ post.pk }}"></a>&nbsp;comments</span>
+                    <span class="views-count"><a href="#">{{ post.views }} pageviews</a></span>
+                </div>
+            </header>
+            <div class="entry-content clearfix">
+                <p>{{ post.excerpt }}...</p>
+                <div class="read-more cl-effect-14">
+                    <a href="{{ post.get_absolute_url }}" class="more-link">Read On <span class="meta-nav">→</span></a>
+                </div>
+            </div>
+
+            <!-- comment_count -->
+            <script type="module">
+                import {commentCount} from 'https://unpkg.com/@waline/client@v3/dist/comment.js';
+
+                commentCount({
+                    serverURL: 'https://comments.asxe.vip/',
+                    path: '{{ post.get_absolute_url }}',
+                    selector: '.waline-comment-count-{{ post.pk }}'
+                });
+            </script>
+
+        </article>
+        {% empty %}
+        <div class="no-post">There are no published articles yet!</div>
+    {% endfor %}
+
+    <!--pagination-->
+    {% include "pagination/pagination_sim.html" %}
+
+{% endblock main %}
+
+
+{% block toc %}
+
+    {% recent_posts %}
+    {% archives %}
+    {% category_list %}
+    {% tags %}
+
+    <div class="rss">
+        <a href="{% url 'blog:rss' %}"><span class="ion-social-rss-outline"></span> RSS</a>
+    </div>
+
+{% endblock toc %}
