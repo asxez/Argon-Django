@@ -7,7 +7,20 @@
 pip install -r requirements.txt
 ```
 
-2. 根目录运行
+2. 数据迁移
+```cmd
+python manage.py makemigrations
+```
+```cmd
+python manage.py migrate
+```
+
+3. 构建索引
+```cmd
+python manage.py rebuild_index 
+```
+
+4. 最后启动
 ```cmd
 python manage.py runserver
 ```

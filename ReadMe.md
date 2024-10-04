@@ -8,11 +8,23 @@ This is a Django refactoring of the <a href="https://github.com/solstice23/argon
 pip install -r requirements.txt
 ```
 
-2. Root directory run:
+2. Data Migration
 ```cmd
-python manage.py runserver
+python manage.py makemigrations
+```
+```cmd
+python manage.py migrate
 ```
 
+3. Now you should build index for your posts.
+```cmd
+python manage.py rebuild_index 
+```
+
+4. Then:
+```cmd
+python manage.py runserver 
+```
 Request **127.0.0.1:8000/argon**.
 
 ## LICENSE

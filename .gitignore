@@ -1,0 +1,5 @@
+.idea
+media
+whoosh_index
+blog/migrations/*
+!blog/migrations/__init__.py
