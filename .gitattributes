@@ -1,7 +1,18 @@
-; blog/templates/argon/static/argon/js/*.js linguist-vendored
-; blog/templates/argon/static/argon/css/*.css linguist-vendored
-; blog/templates/sim/static/blog/css/*.css linguist-vendored
-; blog/templates/sim/static/blog/js/*.js linguist-vendored
+; argon-js
+**/blog/templates/argon/static/argon/js/fairyDustCursor.min.js linguist-vendored
+**/blog/templates/argon/static/argon/js/merged-js.js linguist-vendored
+**/blog/templates/argon/static/argon/js/smoothscroll.js linguist-vendored
+**/blog/templates/argon/static/argon/js/vanilla-tilt.min.js linguist-vendored
 
-*.js linguist-vendored
-*.css linguist-vendored
+; argon-css
+**/blog/templates/argon/static/argon/css/merged_css.css linguist-vendored
+**/blog/templates/argon/static/argon/css/vs2015.css linguist-vendored
+
+; sim-js
+**/blog/templates/sim/static/blog/js/jquery-3.7.1.js linguist-vendored
+
+; sim-css
+**/blog/templates/sim/static/blog/css/bootstrap.min.css linguist-vendored
+
+; *.js linguist-vendored
+; *.css linguist-vendored
