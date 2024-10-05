@@ -1,4 +1,7 @@
-blog/templates/argon/static/argon/js/*.js linguist-vendored
-blog/templates/argon/static/argon/css/*.css linguist-vendored
-blog/templates/sim/static/blog/css/*.css linguist-vendored
-blog/templates/sim/static/blog/js/*.js linguist-vendored
+; blog/templates/argon/static/argon/js/*.js linguist-vendored
+; blog/templates/argon/static/argon/css/*.css linguist-vendored
+; blog/templates/sim/static/blog/css/*.css linguist-vendored
+; blog/templates/sim/static/blog/js/*.js linguist-vendored
+
+*.js linguist-vendored
+*.css linguist-vendored
