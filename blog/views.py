@@ -129,7 +129,6 @@ class ArgonDetailView(DetailView):
         context[
             'body_class'] = f'post-template-default single single-post postid-{self.kwargs.get("pk")} single-format-standard'
         context['main_class'] = ''
-        print(context)
         return context
 
     def get_object(self, queryset=None):
