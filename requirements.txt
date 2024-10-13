@@ -6,3 +6,4 @@ Markdown==3.7
 Whoosh==2.7.4
 Whoosh_Reloaded==2.7.5
 mysqlclient
+Pillow==10.0.1
