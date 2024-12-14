@@ -6,6 +6,7 @@ from . import views, feed
 
 app_name = 'blog'
 urlpatterns = [
+    path("", views.HomeView.as_view(), name='home'),
     path("sim/", views.SimIndexView.as_view(), name="sim"),
     path("sim/<int:pk>", views.SimDetailView.as_view(), name='sim_detail'),
     path("sim/archive/<int:year>/<int:month>", views.SimArchivesView.as_view(), name='sim_archive'),

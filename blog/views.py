@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from haystack.generic_views import SearchView
 from haystack.query import SearchQuerySet
 from pure_pagination.mixins import PaginationMixin
@@ -23,6 +23,10 @@ class BaseView(ListView):
         context['category_count'] = Category.objects.count()
         context['tag_count'] = Tag.objects.count()
         return context
+
+
+class HomeView(TemplateView):
+    template_name = 'home/index.html'
 
 
 class SimIndexView(PaginationMixin, BaseView):

@@ -121,7 +121,8 @@ USE_TZ = False
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "blog/templates/sim", STATIC_URL),
-    os.path.join(BASE_DIR, "blog/templates/argon", STATIC_URL)
+    os.path.join(BASE_DIR, "blog/templates/argon", STATIC_URL),
+    os.path.join(BASE_DIR, "blog/templates/home", STATIC_URL)
 ]
 
 MEDIA_URL = 'media/'

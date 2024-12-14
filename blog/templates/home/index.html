@@ -1,0 +1,81 @@
+{% load static %}
+
+<html lang="zh">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'home/css/vno.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/iconfont.css' %}">
+    <link rel="icon" href="{% static  'home/favicon.ico' %}">
+</head>
+
+<body>
+<span class="mobile btn-mobile-menu">
+        <i class="social iconfont icon-list btn-mobile-menu__icon"></i>
+        <i class="social iconfont icon-angleup btn-mobile-close__icon hidden"></i>
+</span>
+<header id="panel" class="panel-cover">
+    <div class="panel-main">
+        <div class="panel-main__inner panel-inverted">
+            <div class="panel-main__content">
+                <div class="ih-item circle effect right_to_left">
+                    <a href="#" title="" class="blog-button">
+                        <div class="img">
+                            <img src="{% static 'home/avatar.webp' %}" alt="img" class="js-avatar iUp profilepic">
+                        </div>
+                    </a>
+                </div>
+                <h1 class="panel-cover__title panel-title iUp">
+                    <a href="#" title="ASXE HOME">HOME</a>
+                </h1>
+                <p class="panel-cover__subtitle panel-subtitle iUp">路漫漫其修远兮 吾将上下而求索</p>
+                <hr class="panel-cover__divider iUp"/>
+                <p id="description" class="panel-cover__description iUp">我无敌，你随意</p>
+                <div class="navigation-wrapper iUp">
+                    <div>
+                        <nav class="cover-navigation cover-navigation--primary">
+                            <ul class="navigation">
+                                <li class="navigation__item">
+                                    <a href="{% url 'blog:argon' %}" class="blog-button">Argon</a>
+                                </li>
+                                <li class="navigation__item">
+                                    <a href="{% url 'blog:sim' %}" class="blog-button">Sim</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="iUp">
+                        <nav class="cover-navigation navigation--social">
+                            <ul class="navigation">
+                                <li class="navigation__item">
+                                    <a href="https://github.com/asxez/" title="github" target="_blank">
+                                        <i class='social iconfont icon-github'></i>
+                                        <span class="label">github</span>
+                                    </a>
+                                </li>
+                                {#                                <li class="navigation__item">#}
+                                {#                                    <a href="javascript:decryptEmail('Mjk3MzkxODE3N0BxcS5jb20=');" title="email">#}
+                                {#                                        <!--                                         <a href="mailto:" title="email">-->#}
+                                {#                                        <i class='social iconfont icon-email'></i>#}
+                                {#                                        <span class="label">email</span>#}
+                                {#                                    </a>#}
+                                {#                                </li>#}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-cover--overlay cover-slate"></div>
+    </div>
+    <div class="runtime iUp">
+        <span id="RunTime"></span>
+    </div>
+</header>
+<script type="text/javascript" src="{% static 'home/js/main.js' %}"></script>
+<script>getImages()</script>
+</body>
+</html>
