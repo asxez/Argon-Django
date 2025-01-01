@@ -42,6 +42,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'blog.forbidden_middleware.ForbiddenMiddleware',
+    'blog.forbidden_middleware.SetTimestampCookieMiddleware',
+    'blog.forbidden_middleware.TimestampCookieValidationMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -126,7 +129,10 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
+MEDIA_ROOT = [
+    os.path.join(BASE_DIR, MEDIA_URL),
+    os.path.join(BASE_DIR, 'geoip/')
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -149,3 +155,12 @@ HAYSTACK_CONNECTIONS = {
 }
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+# ForbiddenMiddleware
+OPEN_FORBIDDEN = True  # 是否启用屏蔽功能
+MIN_FORBIDDEN_TIME = 60  # 最小屏蔽时长
+MAX_FORBIDDEN_TIME = 600  # 最大屏蔽时长
+FORBIDDEN_IP_SECONDS = 60  # 记录同一IP下用户被屏蔽次数的KEY的过期时间
+FORBIDDEN_USER_SECONDS = 1  # 记录同一用户指定时间步长内访问次数的KEY的过期时间
+FORBIDDEN_IP_COUNT = 5  # 同一IP的用户被屏蔽次数超过该值将屏蔽该IP
+FORBIDDEN_USER_COUNT = 8  # 同一用户指定时间步长内访问次数超过该值将屏蔽该用户
