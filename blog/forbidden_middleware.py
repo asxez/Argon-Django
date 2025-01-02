@@ -1,13 +1,10 @@
-import base64
 import hashlib
 import hmac
-import os
 import random
 import string
+from datetime import datetime
 from datetime import timedelta
 
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad
 from django.conf import settings
 from django.contrib.gis.geoip2 import GeoIP2
 from django.core.cache import caches
@@ -15,6 +12,8 @@ from django.http import HttpResponseForbidden
 from django.http import JsonResponse
 from django.utils import dateparse, timezone
 from django.utils.deprecation import MiddlewareMixin
+
+from . import aes
 
 cache = caches['default']  # from django.core.cache import cache没有incr功能
 geoip = GeoIP2(path='geoip', country='GeoLite2-Country.mmdb')  # 加载IP地理位置数据库
@@ -37,7 +36,7 @@ def generate_random_number():
 def set_cookie_with_timestamp(response):
     secret_key = settings.SECRET_KEY
     timestamp = timezone.now().isoformat()
-    expiry = timezone.now() + timedelta(minutes=1)  # cookie有效期
+    expiry = timezone.now() + timedelta(minutes=5)  # cookie有效期
 
     # 生成cookie内容（时间戳和过期时间）
     cookie_value = f"{timestamp}|{expiry.isoformat()}"
@@ -45,17 +44,17 @@ def set_cookie_with_timestamp(response):
     cookie = cookie_value + '|' + signature
     signature_length = len(signature)
     response.set_cookie(f'timestamp_cookie66', cookie, expires=expiry)
-    nums = generate_random_number()
-    for i in nums:
-        if i == 66:
-            continue
-        f_sig = insert_random_chars(signature, 20)
-        f_cookie = cookie_value + '|' + f_sig[:signature_length]
-        response.set_cookie(
-            f'timestamp_cookie{i}',
-            f_cookie,
-            expires=expiry
-        )
+    # nums = generate_random_number()
+    # for i in nums:
+    #     if i == 66:
+    #         continue
+    #     f_sig = insert_random_chars(signature, 20)
+    #     f_cookie = cookie_value + '|' + f_sig[:signature_length]
+    #     response.set_cookie(
+    #         f'timestamp_cookie{i}',
+    #         f_cookie,
+    #         expires=expiry
+    #     )
 
 
 def validate_timestamp_cookie(request):
@@ -79,7 +78,7 @@ def validate_timestamp_cookie(request):
         return response
 
     # 校验时间戳是否在允许的范围内
-    if abs((timezone.now() - timestamp).total_seconds()) > 60:  # 1分钟
+    if abs((timezone.now() - timestamp).total_seconds()) > 300:  # 5分钟
         return JsonResponse({'error': 'Invalid cookie.'}, status=400)
 
     # 重新生成签名并校验
@@ -164,14 +163,6 @@ class TimestampCookieValidationMiddleware(MiddlewareMixin):
             return validation_response
 
 
-def generate_encrypted_cookie(secret_key):
-    cookie_value = os.urandom(16).hex()
-    # 加密Cookie
-    cipher = AES.new(secret_key.encode(), AES.MODE_ECB)
-    encrypted_cookie = base64.b64encode(cipher.encrypt(pad(cookie_value.encode(), AES.block_size))).decode()
-    return encrypted_cookie, cookie_value
-
-
 class CookieEncryptionMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -179,16 +170,30 @@ class CookieEncryptionMiddleware:
 
     def __call__(self, request):
         encrypted_cookie = request.COOKIES.get('encrypted_cookie')
-
         if not encrypted_cookie:
             # 首次请求，生成加密Cookie并返回
-            encrypted_cookie, cookie_value = generate_encrypted_cookie(self.secret_key)
+            cu_t = datetime.now()
+            st = int(cu_t.timestamp() * 1000)
+            data = 'asxeMozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.07646cc99d133894ba5e532de2a93f352' + str(
+                st)
+            encrypted_cookie = aes.aesEncrypt(aes.key, data)
             response = self.get_response(request)
             response.set_cookie('encrypted_cookie', encrypted_cookie)
             return response
         else:
-            if len(encrypted_cookie) < 256:
-                return HttpResponseForbidden("Invalid encrypted cookie")
+            cookie = aes.aesDecrypt(aes.key, encrypted_cookie)
+            ct = int(cookie.split(aes.key)[1])
+            cu_t = datetime.now()
+            st = int(cu_t.timestamp() * 1000)
+            print(ct, st)
+            if abs(ct - st) > 10000:
+                data = 'asxeMozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 Edg/131.0.0.07646cc99d133894ba5e532de2a93f352' + str(
+                    st)
+                encrypted_cookie = aes.aesEncrypt(aes.key, data)
+                response = self.get_response(request)
+                response.set_cookie('encrypted_cookie', encrypted_cookie)
+            if len(encrypted_cookie) < 230 or abs(ct - st) > 5000:
+                return HttpResponseForbidden("Invalid encrypted cookie.")
             request.decrypted_cookie = encrypted_cookie
             response = self.get_response(request)
             return response
