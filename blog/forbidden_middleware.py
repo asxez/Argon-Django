@@ -1,9 +1,13 @@
+import base64
 import hashlib
 import hmac
-from datetime import timedelta
+import os
 import random
 import string
+from datetime import timedelta
 
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
 from django.conf import settings
 from django.contrib.gis.geoip2 import GeoIP2
 from django.core.cache import caches
@@ -27,7 +31,7 @@ def insert_random_chars(input_str, num_insertions):
 
 
 def generate_random_number():
-    return [random.randint(0, 1000) + i for i in range(100)]
+    return [random.randint(0, 1000) + i for i in range(1)]
 
 
 def set_cookie_with_timestamp(response):
@@ -75,7 +79,7 @@ def validate_timestamp_cookie(request):
         return response
 
     # 校验时间戳是否在允许的范围内
-    if abs((timezone.now() - timestamp).total_seconds()) > 60:  # 5分钟
+    if abs((timezone.now() - timestamp).total_seconds()) > 60:  # 1分钟
         return JsonResponse({'error': 'Invalid cookie.'}, status=400)
 
     # 重新生成签名并校验
@@ -102,7 +106,7 @@ class ForbiddenMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
         if not settings.OPEN_FORBIDDEN:
             return response
-        ip_address = request.META.get('HTTP_REMOTE_ADDR', request.META['REMOTE_ADDR'])  # 获取访问者IP地址
+        ip_address = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', ''))  # 获取访问者IP地址
         try:
             user_tag = request.COOKIES.get(settings.CSRF_COOKIE_NAME)  # 从请求中获取cookie
             if not user_tag:
@@ -158,3 +162,33 @@ class TimestampCookieValidationMiddleware(MiddlewareMixin):
         validation_response = validate_timestamp_cookie(request)
         if validation_response:
             return validation_response
+
+
+def generate_encrypted_cookie(secret_key):
+    cookie_value = os.urandom(16).hex()
+    # 加密Cookie
+    cipher = AES.new(secret_key.encode(), AES.MODE_ECB)
+    encrypted_cookie = base64.b64encode(cipher.encrypt(pad(cookie_value.encode(), AES.block_size))).decode()
+    return encrypted_cookie, cookie_value
+
+
+class CookieEncryptionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+        self.secret_key = "7646cc99d133894ba5e532de2a93f352"
+
+    def __call__(self, request):
+        encrypted_cookie = request.COOKIES.get('encrypted_cookie')
+
+        if not encrypted_cookie:
+            # 首次请求，生成加密Cookie并返回
+            encrypted_cookie, cookie_value = generate_encrypted_cookie(self.secret_key)
+            response = self.get_response(request)
+            response.set_cookie('encrypted_cookie', encrypted_cookie)
+            return response
+        else:
+            if len(encrypted_cookie) < 256:
+                return HttpResponseForbidden("Invalid encrypted cookie")
+            request.decrypted_cookie = encrypted_cookie
+            response = self.get_response(request)
+            return response

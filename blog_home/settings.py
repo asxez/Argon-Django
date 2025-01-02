@@ -45,6 +45,7 @@ MIDDLEWARE = [
     'blog.forbidden_middleware.ForbiddenMiddleware',
     'blog.forbidden_middleware.SetTimestampCookieMiddleware',
     'blog.forbidden_middleware.TimestampCookieValidationMiddleware',
+    'blog.forbidden_middleware.CookieEncryptionMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
